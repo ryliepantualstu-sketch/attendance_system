@@ -1,0 +1,136 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #b8f2c8, #d9fdd3);
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+.container {
+  background: #ffffff;
+  width: 100%;
+  max-width: 380px;
+  padding: 40px 30px 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  animation: fadeIn 0.8s ease;
+  margin: auto;
+  position: relative;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 15px;
+}
+
+h2 {
+  margin-bottom: 25px;
+  color: #2b593e;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 10px 0;
+  border-radius: 12px;
+  border: 1.5px solid #cde6cf;
+  font-size: 15px;
+  background: #f8fff8;
+  transition: all 0.3s;
+  box-sizing: border-box;
+}
+
+input:focus {
+  border-color: #6ecc84;
+  box-shadow: 0 0 6px rgba(110, 204, 132, 0.6);
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #66c97e;
+  border: none;
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+  border-radius: 14px;
+  margin-top: 15px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: #5aba71;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(106, 187, 122, 0.4);
+}
+
+.loading-spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-block;
+}
+
+#message {
+  margin-top: 12px;
+  color: #e63946;
+  font-weight: 600;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@media (max-width: 400px) {
+  .container {
+    padding: 30px 20px;
+  }
+  h2 {
+    font-size: 24px;
+  }
+  input,
+  button {
+    font-size: 15px;
+    padding: 10px 12px;
+  }
+}
