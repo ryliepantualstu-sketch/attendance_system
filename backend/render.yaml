@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: attendance-system-backend
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_HOST
+        fromDatabase:
+          name: attendance-db
+          property: host
+      - key: DB_USER
+        fromDatabase:
+          name: attendance-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: attendance-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: attendance-db
+          property: database
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 5000
+
+databases:
+  - name: attendance-db
+    databaseName: attendance_system
+    user: attendance_user
