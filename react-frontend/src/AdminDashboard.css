@@ -13,6 +13,42 @@
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --info: #3b82f6;
 }
+
+/* Course Filter Buttons */
+.course-filter-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.course-btn {
+  padding: 10px 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background: white;
+  color: #64748b;
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.course-btn:hover {
+  border-color: #2b593e;
+  color: #2b593e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(43, 89, 62, 0.15);
+}
+
+.course-btn.active {
+  background: linear-gradient(135deg, #2b593e 0%, #1e4530 100%);
+  color: white;
+  border-color: #2b593e;
+  box-shadow: 0 4px 12px rgba(43, 89, 62, 0.3);
+  font-weight: 600;
+}
+
 [data-theme="dark"] {
   --bg: #0f1720;
   --sidebar: #1f3b2a;

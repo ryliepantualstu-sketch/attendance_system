@@ -14,7 +14,7 @@ const AdminDashboard = () => {
   const [activeView, setActiveView] = useState("dashboard");
   const [users, setUsers] = useState([]);
   const [grades, setGrades] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState("All");
+  const [selectedCourse, setSelectedCourse] = useState("Information System");
   const [selectedSection, setSelectedSection] = useState("All");
   const [expandedStudents, setExpandedStudents] = useState({}); // Track expanded students in grades view
   const [loading, setLoading] = useState(false);
@@ -916,20 +916,12 @@ const AdminDashboard = () => {
                   <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', fontSize: '14px' }}>
                     Filter by Course:
                   </label>
-                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                    <button
-                      onClick={() => setSelectedCourse("All")}
-                      className={`btn ${selectedCourse === "All" ? "btn-primary" : "btn-secondary"}`}
-                      style={{ padding: '8px 16px', fontSize: '13px' }}
-                    >
-                      All Courses
-                    </button>
+                  <div className="course-filter-buttons">
                     {['Information System', 'Criminology', 'Psychology', 'Tourism Management', 'Accountancy'].map(course => (
                       <button
                         key={course}
                         onClick={() => setSelectedCourse(course)}
-                        className={`btn ${selectedCourse === course ? "btn-primary" : "btn-secondary"}`}
-                        style={{ padding: '8px 16px', fontSize: '13px' }}
+                        className={`course-btn ${selectedCourse === course ? "active" : ""}`}
                       >
                         {course}
                       </button>
@@ -977,7 +969,7 @@ const AdminDashboard = () => {
                   {Object.values(grades
                     .filter(grade => {
                       // Filter by course
-                      if (selectedCourse !== "All" && grade.course !== selectedCourse) {
+                      if (grade.course !== selectedCourse) {
                         return false;
                       }
                       // Filter by section

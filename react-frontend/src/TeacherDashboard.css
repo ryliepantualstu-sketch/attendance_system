@@ -417,14 +417,16 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 16px;
+  table-layout: fixed;
 }
 th,
 td {
   padding: 14px 12px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  text-align: left;
+  word-wrap: break-word;
 }
 th {
-  text-align: left;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -437,6 +439,7 @@ th {
 td {
   font-size: 14px;
   color: #334155;
+  vertical-align: middle;
 }
 tbody tr {
   transition: all 0.2s ease;

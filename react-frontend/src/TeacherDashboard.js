@@ -19,7 +19,6 @@ const TeacherDashboard = () => {
   const [attendanceRecords, setAttendanceRecords] = useState({});
   const [isSaving, setIsSaving] = useState(false);
   const [attendanceStats, setAttendanceStats] = useState([]);
-  const [classGrades, setClassGrades] = useState([]);
   const [dashboardStats, setDashboardStats] = useState({
     classes: 0,
     students: 0,
@@ -41,22 +40,6 @@ const TeacherDashboard = () => {
       console.log("Attendance stats:", data);
     } catch (err) {
       console.error("Error loading attendance stats:", err);
-    }
-  }, [selectedClass, apiUrl]);
-
-  // Load grades for classes page
-  const loadClassGrades = useCallback(async () => {
-    if (!selectedClass) return;
-    
-    try {
-      const response = await fetch(
-        `${apiUrl}/api/grades?course=${encodeURIComponent(selectedClass.course)}&yearLevel=${encodeURIComponent(selectedClass.year)}`
-      );
-      const data = await response.json();
-      setClassGrades(data);
-      console.log("Class grades:", data);
-    } catch (err) {
-      console.error("Error loading class grades:", err);
     }
   }, [selectedClass, apiUrl]);
 
@@ -143,9 +126,8 @@ const TeacherDashboard = () => {
   useEffect(() => {
     if (selectedClass && (activePage === 'classes' || activePage === 'records')) {
       loadAttendanceStats();
-      loadClassGrades();
     }
-}, [selectedClass, activePage, loadAttendanceStats, loadClassGrades]);
+}, [selectedClass, activePage, loadAttendanceStats]);
 
 useEffect(() => {
     document.title = "Teacher Dashboard";
@@ -524,7 +506,6 @@ useEffect(() => {
                             <th>Name</th>
                             <th>Email</th>
                             <th>Attendance</th>
-                            <th>Grade</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -533,39 +514,6 @@ useEffect(() => {
                             .map(student => {
                               const stats = Array.isArray(attendanceStats) ? attendanceStats.find(stat => stat.student_id === student.id) : null;
                               const attendanceRate = stats?.attendance_rate || 0;
-                              const presentCount = stats?.present_count || 0;
-                              const totalDays = stats?.total_days || 0;
-                              
-                              // Calculate average grade from classGrades
-                              const studentGrades = classGrades.filter(g => g.student_id === student.id);
-                              const numericGrades = studentGrades
-                                .map(g => parseFloat(g.grade))
-                                .filter(g => !isNaN(g));
-                              const averageGrade = numericGrades.length > 0 
-                                ? (numericGrades.reduce((a, b) => a + b, 0) / numericGrades.length).toFixed(2)
-                                : null;
-                              
-                              // Determine grade badge
-                              let gradeBadge = 'No grades yet';
-                              let gradeClass = 'badge';
-                              if (averageGrade) {
-                                if (averageGrade <= 1.75) {
-                                  gradeBadge = `${averageGrade} (Excellent)`;
-                                  gradeClass = 'badge success';
-                                } else if (averageGrade <= 2.50) {
-                                  gradeBadge = `${averageGrade} (Very Good)`;
-                                  gradeClass = 'badge success';
-                                } else if (averageGrade <= 3.00) {
-                                  gradeBadge = `${averageGrade} (Pass)`;
-                                  gradeClass = 'badge warning';
-                                } else if (averageGrade <= 4.00) {
-                                  gradeBadge = `${averageGrade} (Conditional)`;
-                                  gradeClass = 'badge warning';
-                                } else {
-                                  gradeBadge = `${averageGrade} (Fail)`;
-                                  gradeClass = 'badge danger';
-                                }
-                              }
                               
                               return (
                                 <tr key={student.id}>
@@ -574,16 +522,15 @@ useEffect(() => {
                                   <td>{student.email}</td>
                                   <td>
                                     <span className={`badge ${attendanceRate >= 75 ? 'success' : attendanceRate >= 50 ? 'warning' : 'danger'}`}>
-                                      {attendanceRate > 0 ? `${attendanceRate}% (${presentCount}/${totalDays})` : 'No records'}
+                                      {attendanceRate > 0 ? `${attendanceRate}%` : 'No records'}
                                     </span>
                                   </td>
-                                  <td><span className={gradeClass}>{gradeBadge}</span></td>
                                 </tr>
                               );
                             })}
                           {students.filter(s => s.course === selectedClass.course && s.studentYearLevel === selectedClass.year).length === 0 && (
                             <tr>
-                              <td colSpan="5" style={{ textAlign: 'center', color: 'var(--muted)' }}>
+                              <td colSpan="4" style={{ textAlign: 'center', color: 'var(--muted)' }}>
                                 No students enrolled in this class
                               </td>
                             </tr>
