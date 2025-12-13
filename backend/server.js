@@ -12,6 +12,15 @@ app.use(bodyParser.json());
 
 const SECRET = process.env.JWT_SECRET || "dev_fallback_secret";
 
+// Root route - health check
+app.get("/", (req, res) => {
+  res.json({ 
+    message: "Attendance System API is running!",
+    status: "ok",
+    timestamp: new Date().toISOString()
+  });
+});
+
 // MySQL connection with retry logic
 const dbConfig = {
   host: process.env.DB_HOST || "localhost",
