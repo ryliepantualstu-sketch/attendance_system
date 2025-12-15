@@ -15,41 +15,50 @@ const Login = () => {
     setMessage("");
     setLoading(true);
     try {
+      console.log("[DEBUG] Sending login request to:", `${API_BASE}/api/auth/login`);
       const res = await fetch(`${API_BASE}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim(), password })
       });
+      console.log("[DEBUG] Response status:", res.status);
       let data;
       const ct = res.headers.get("content-type") || "";
       if (ct.includes("application/json")) {
         data = await res.json();
+        console.log("[DEBUG] Response JSON:", data);
       } else {
         // Non-JSON response
         const text = await res.text();
+        console.log("[DEBUG] Non-JSON response:", text);
         throw new Error(`Unexpected response: ${text.substring(0,120)}`);
       }
       if (!res.ok) {
         setMessage(data.error ? `Login failed: ${data.error}` : `Login failed (status ${res.status})`);
+        console.log("[DEBUG] Login failed:", data.error || res.status);
         return;
       }
       if (!data.token || !data.user) {
         setMessage("Login failed: malformed server response");
+        console.log("[DEBUG] Malformed server response", data);
         return;
       }
       localStorage.setItem("token", data.token);
       localStorage.setItem("userRole", data.user.role);
       localStorage.setItem("userName", data.user.name);
       localStorage.setItem("userId", data.user.id);
-      if (data.user.role === "admin") window.location.href = "/adminDashboard";
-      else if (data.user.role === "teacher") window.location.href = "/teacherDashboard";
-      else if (data.user.role === "student") window.location.href = "/studentDashboard";
+      console.log("[DEBUG] Login success, user role:", data.user.role);
+      if (data.user.role === "admin") window.location.hash = "#/adminDashboard";
+      else if (data.user.role === "teacher") window.location.hash = "#/teacherDashboard";
+      else if (data.user.role === "student") window.location.hash = "#/studentDashboard";
     } catch (err) {
       if (err.name === "TypeError") {
         // Usually network error / failed to fetch
         setMessage("Network error: cannot reach server. Ensure backend is running on " + API_BASE);
+        console.log("[DEBUG] Network error:", err);
       } else {
         setMessage("Error: " + err.message);
+        console.log("[DEBUG] Error:", err);
       }
     } finally {
       setLoading(false);

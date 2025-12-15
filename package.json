@@ -39,5 +39,11 @@
     "electron": "^39.2.4",
     "electron-builder": "^26.0.12",
     "react-router-dom": "^7.9.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.26"
+  },
+  "overrides": {
+    "@types/node": "^20.19.26"
   }
 }
